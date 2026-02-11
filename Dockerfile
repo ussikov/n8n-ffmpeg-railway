@@ -1,13 +1,17 @@
-FROM n8nio/n8n:latest
+# Use official Node.js Alpine as base image with ffmpeg support
+FROM node:18-alpine
 
-# Switch to root for package installation
-USER root
-
-# Install ffmpeg using apk (for Alpine Linux)
+# Install ffmpeg and dependencies
 RUN apk add --no-cache ffmpeg
 
-# Switch back to node user for security
-USER node
+# Install n8n globally
+RUN npm install -g n8n
 
-# Use default n8n entrypoint
+# Create app directory
+WORKDIR /home/node/app
+
+# Expose default n8n port
+EXPOSE 5678
+
+# Start n8n
 CMD ["n8n"]
