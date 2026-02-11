@@ -3,15 +3,11 @@ FROM n8nio/n8n:latest
 # Switch to root for package installation
 USER root
 
-# Install ffmpeg and keep the image clean
-RUN apt-get update && \
-    apt-get install -y \
-            ffmpeg \
-                && apt-get clean \
-                    && rm -rf /var/lib/apt/lists/*
+# Install ffmpeg using apk (for Alpine Linux)
+RUN apk add --no-cache ffmpeg
 
-                    # Switch back to node user for security
-                    USER node
+# Switch back to node user for security
+USER node
 
-                    # Use default n8n entrypoint
-                    CMD ["n8n"]
+# Use default n8n entrypoint
+CMD ["n8n"]
